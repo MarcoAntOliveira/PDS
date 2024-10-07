@@ -1,0 +1,1 @@
+print("02_a.png", "-dpng");
