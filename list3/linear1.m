@@ -15,7 +15,7 @@ X2 = dft(x2, N); % Transformada do segundo sinal
 X_comb = dft(x_comb, N); % Transformada da combinação linear
 
 %% Plotando os sinais contínuos e discretos
-figure('NumberTitle','off','Name','Exemplos DFT Linearidade - Figura 1');
+figure('NumberTitle','off','Name','Exemplos DFT Linearidade');
 subplot(3,2,1);
 plot(t,x1_t);
 xlabel('t');
@@ -28,13 +28,13 @@ title(['x_1(n) = sin(2{\pi}50nT_s)']);
 ylabel('x_1(n)');
 % ... Basta plotas os demais sinais contínuos e discretos
 % Plotar os sinais e suas transformadas
-figure('NumberTitle','off','Name','Exemplos DFT Linearidade - Figura2');
-subplot(3,2,1);
+
+subplot(3,2,3);
 stem(n1,x1,'filled','markersize',2);
 xlabel('n');
 title(['x_1(n) = sin(2{\pi}50nT_s)']);
 ylabel('x_1(n)');
-subplot(3, 2, 2);
+subplot(3, 2, 4);
 stem(abs(X1));
 axis([0,210,min(abs(X1)),max(abs(X1))]);
 title('DFT de x1');
@@ -42,5 +42,19 @@ xlabel('Frequência (bins)');
 ylabel('Magnitude');
 %basta plotas os demais sinais discretos e suas respectivas
 %magnitudes da DF
+% Plotar os sinais e suas transformadas em hertz
 
+k=(0:N-1); % Fs e N já foram definidos
+subplot(3,2,5);
+stem(n1,x1,'filled','markersize',2);
+xlabel('n');
+title(['x_1(n) = sin(2{\pi}50nT_s)']);
+ylabel('x_1(n)');
+subplot(3, 2, 6);
+plot((Fs/N)*k,abs(X1));
+axis([0,200,min(abs(X1)),max(abs(X1))]);
+title('DFT de x1');
+xlabel('Frequência (Hz)');
+ylabel('Magnitude');
+% Plot os outros sinais da mesma forma
 pause(15);
