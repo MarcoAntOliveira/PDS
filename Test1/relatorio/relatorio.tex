@@ -69,6 +69,10 @@ A avaliação consiste em realizar uma pesquisa, resolução algébrica e implem
 Obs: A partir do slide 113 da aula referente a DFT (Transformada Discreta de Fourier (DFT)), há um tópico intitulado EXTRA onde são descritos algoritmos FFT que podem ser utilizados no trabalho.
 
 
+Equação de Schrödinger: propagação de onda de probabilidade
 
+O cálculo da evolução temporal da equação de schrödinger é computacionalmente exigente. A cada passo de tempo é necessário recalcular a posição da onda de probabilidade que representa a partícula em cada ponto do domínio. Portanto, torna-se vantajoso o uso da transformada de fourier rápida. Além disso a própria transformada faz parte da solução, pois também deseja-se obter a sua evolução temporal no espaço de momento. O código foi desenvolvido em python por Jake Vanderplas, no entanto, sob extensas modificações foi possível não apenas entender o código mas também modifica-lo para representar situações diferentes das propostas pelo autor. No site do autor encontra-se a explicação da teoria por trás do problema e também o funcionamento do algoritmo. A seguir exploramos a interação de uma onda de probabilidade com potenciais de diferentes formas.
+
+A parte principal do código modificado é exibida abaixo. Nota-se que o autor utilizou o método Leapfrog para integrar as equações de movimento fazendo a seguinte sequência de operações: dar um meio passo no espaço real, tomar a transformada, dar um passo no espaço de momento, tomar a transformada inversa e finalmente dar um passo completo no espaço real. 
 
 \end{document}
