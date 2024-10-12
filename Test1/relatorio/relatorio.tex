@@ -16,7 +16,7 @@ documentclass[letterpaper]{article}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \definecolor{new_blue}{rgb}{0, 0.7, 2}
 \definecolor{new_red}{rgb}{0.70, 0.047, 0}
-\definecolor{new_pink}{rgb}{2.55, 0 , 2.03}
+\definecolor{new_pink}{rgb}{2.55, 0, 2.03}
 
 
 
@@ -33,7 +33,7 @@ documentclass[letterpaper]{article}
     frame = shadowbox,
 }
 
-\title{Trabalho processamento digital de sinais 1}
+\title{Algoritmos FFT}
 \author{Marcos Antonio Tomé Oliveira}
 \begin{document}
 
@@ -42,7 +42,32 @@ documentclass[letterpaper]{article}
 \listoffigures
 \newpage
 
-\section{Questão 1}
+\section{pesquisa}
+
+
+
+A avaliação consiste em realizar uma pesquisa, resolução algébrica e implementação da Transformada Rápida de Fourier (FFT). Além disso, deve-se apresentar a resolução em frequência da FFT de um sinal aleatório e compará-la com a resolução em frequência da DFT do mesmo sinal. Cada dupla deve implementar, no mínimo, dois algoritmos FFT. A entrega deverá conter:
+
+    Relatório PDF
+        Formatação: conforme as normas para trabalhos acadêmicos (https://portal.bu.ufsc.br/normalizacao/);
+            O documento deve conter apenas os seguintes elementos: Capa, Folha de Rosto, Sumário, Introdução, Desenvolvimento, Conclusão e Referências.
+        Pesquisa Bibliográfica: utilizar livros e/ou artigos científicos, descrever em que situações o algoritmo escolhido deve pode ser aplicado (aplicações,tipos de sinais, comprimento, etc);
+        Solução Algébrica: detalhes da formulação matemática, ex.: propriedades das transformadas que são utilizadas, entre outros;
+        Algoritmo: Descreva as etapas do algoritmo a ser implementado (você pode utilizar diagramas ou linguagem descritiva);
+        Resultados: Descrever e justificar o sinal aleatório utilizado. Comparar a DFT com a FFT desse sinal, e realizar a análise utilizando a Relação de Parseval (sinal original vs espectro de frequência do mesmo sinal);
+        Ponto extra na avaliação: apresente um comparativo/análise temporal entre a DFT e as técnicas implementadas.
+    Scripts Octave/Matlab 
+        Todos os algoritmos gerados na resolução do problema deverão ser submetidos com as devidas observações (código comentado) em arquivo Octave/Matlab;
+        Modularização adequada: Crie uma função para cada método implementado;
+        Arquivo Main: Inicie o arquivo limpando o prompt, todas as variáveis e fechando todas as janelas;
+            Comandos: clc; clear all; close all;
+        Bibliotecas: No Octave, provavelmente você utilizará alguma biblioteca. Assim, inclua as bibliotecas utilizadas no arquivo 
+        main.m 
+        logo após os comandos iniciais descritos acima. Se o programa não rodar, a dupla será convidada a apresentar a solução, sob penalidade na nota. (O meu Octave é o mesmo que o seu). Exemplo:
+            pkg load signal;
+
+Obs: A partir do slide 113 da aula referente a DFT (Transformada Discreta de Fourier (DFT)), há um tópico intitulado EXTRA onde são descritos algoritmos FFT que podem ser utilizados no trabalho.
+
 
 
 
