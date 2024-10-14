@@ -1,0 +1,78 @@
+documentclass[letterpaper]{article}
+\usepackage[legalpaper, left=1 cm, right=1cm, top=0.5cm, bottom=0.5cm] {geometry}
+\date{} % Remove a exibição da data
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref} % Para criar links
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.533,0.176,0.376}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{new_blue}{rgb}{0, 0.7, 2}
+\definecolor{new_red}{rgb}{0.70, 0.047, 0}
+\definecolor{new_pink}{rgb}{2.55, 0, 2.03}
+
+
+
+\lstdefinestyle{octstyle}{
+    language=Octave,
+    basicstyle=\ttfamily\small\color{black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{yellow},
+    commentstyle=\color{yellow}\itshape,
+    numbers=left,
+    numberstyle=\tiny\color{blue},
+    breaklines=true,
+    showstringspaces=false,
+    frame = shadowbox,
+}
+
+\title{Algoritmos FFT}
+\author{Marcos Antonio Tomé Oliveira}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\listoffigures
+\newpage
+
+\section{pesquisa}
+
+
+
+A avaliação consiste em realizar uma pesquisa, resolução algébrica e implementação da Transformada Rápida de Fourier (FFT). Além disso, deve-se apresentar a resolução em frequência da FFT de um sinal aleatório e compará-la com a resolução em frequência da DFT do mesmo sinal. Cada dupla deve implementar, no mínimo, dois algoritmos FFT. A entrega deverá conter:
+
+    Relatório PDF
+        Formatação: conforme as normas para trabalhos acadêmicos (https://portal.bu.ufsc.br/normalizacao/);
+            O documento deve conter apenas os seguintes elementos: Capa, Folha de Rosto, Sumário, Introdução, Desenvolvimento, Conclusão e Referências.
+        Pesquisa Bibliográfica: utilizar livros e/ou artigos científicos, descrever em que situações o algoritmo escolhido deve pode ser aplicado (aplicações,tipos de sinais, comprimento, etc);
+        Solução Algébrica: detalhes da formulação matemática, ex.: propriedades das transformadas que são utilizadas, entre outros;
+        Algoritmo: Descreva as etapas do algoritmo a ser implementado (você pode utilizar diagramas ou linguagem descritiva);
+        Resultados: Descrever e justificar o sinal aleatório utilizado. Comparar a DFT com a FFT desse sinal, e realizar a análise utilizando a Relação de Parseval (sinal original vs espectro de frequência do mesmo sinal);
+        Ponto extra na avaliação: apresente um comparativo/análise temporal entre a DFT e as técnicas implementadas.
+    Scripts Octave/Matlab 
+        Todos os algoritmos gerados na resolução do problema deverão ser submetidos com as devidas observações (código comentado) em arquivo Octave/Matlab;
+        Modularização adequada: Crie uma função para cada método implementado;
+        Arquivo Main: Inicie o arquivo limpando o prompt, todas as variáveis e fechando todas as janelas;
+            Comandos: clc; clear all; close all;
+        Bibliotecas: No Octave, provavelmente você utilizará alguma biblioteca. Assim, inclua as bibliotecas utilizadas no arquivo 
+        main.m 
+        logo após os comandos iniciais descritos acima. Se o programa não rodar, a dupla será convidada a apresentar a solução, sob penalidade na nota. (O meu Octave é o mesmo que o seu). Exemplo:
+            pkg load signal;
+
+Obs: A partir do slide 113 da aula referente a DFT (Transformada Discreta de Fourier (DFT)), há um tópico intitulado EXTRA onde são descritos algoritmos FFT que podem ser utilizados no trabalho.
+
+
+Equação de Schrödinger: propagação de onda de probabilidade
+
+O cálculo da evolução temporal da equação de schrödinger é computacionalmente exigente. A cada passo de tempo é necessário recalcular a posição da onda de probabilidade que representa a partícula em cada ponto do domínio. Portanto, torna-se vantajoso o uso da transformada de fourier rápida. Além disso a própria transformada faz parte da solução, pois também deseja-se obter a sua evolução temporal no espaço de momento. O código foi desenvolvido em python por Jake Vanderplas, no entanto, sob extensas modificações foi possível não apenas entender o código mas também modifica-lo para representar situações diferentes das propostas pelo autor. No site do autor encontra-se a explicação da teoria por trás do problema e também o funcionamento do algoritmo. A seguir exploramos a interação de uma onda de probabilidade com potenciais de diferentes formas.
+
+A parte principal do código modificado é exibida abaixo. Nota-se que o autor utilizou o método Leapfrog para integrar as equações de movimento fazendo a seguinte sequência de operações: dar um meio passo no espaço real, tomar a transformada, dar um passo no espaço de momento, tomar a transformada inversa e finalmente dar um passo completo no espaço real. 
+
+\end{document}
