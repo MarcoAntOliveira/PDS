@@ -1,5 +1,5 @@
 function y = cirshftt(x,m,N)
-% Circular shift of m samples wrt size N in sequence x: (timedomain)
+% Circular shift of m samples wrt size N in sequence x: (timekdomain)
 % --------------------------------------------------------------
 % [y] = cirshftt(x,m,N)
 % y = output sequence containing the circular shift
