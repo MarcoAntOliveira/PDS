@@ -1,4 +1,5 @@
 addpath("funcoes/")
+pkg load control
 % Testando a implementação
 fs = 1000; % Frequência de amostragem
 t = 0:1/fs:1-1/fs; % Vetor de tempo de 1 segundo

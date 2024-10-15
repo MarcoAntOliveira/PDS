@@ -23,22 +23,34 @@ sinal_padded = [xt, zeros(1, n - length(xt))]; % Preenchimento com zeros
 fft_result = fft(sinal_padded);
 
 % Frequências correspondentes
-frequencies = (0:n-1) * (fs/n); % Vetor de frequências para plot
-
+frequencias = (0:N-1) * (fs / N); % Frequências para os bins; 
+% Amostrando apenas a metade positiva da FFT
+frequencias_positivas = frequencias(1:N/2);  % Frequências positivas
+fft_positiva = abs(fft_result(1:N/2));       % Magnitude da FFT
+fft_dcb = mag2db(fft_positiva);
 % Plotando o sinal no domínio do tempo
 figure;
-subplot(2,1,1); % Primeiro gráfico (domínio do tempo)
+subplot(3,1,1); % Primeiro gráfico (domínio do tempo)
 plot(t, xt);
 title('Sinal no domínio do tempo');
 xlabel('Tempo [s]');
 ylabel('Amplitude');
 grid on;
 
-% Plotando a magnitude da FFT
-subplot(2,1,2); % Segundo gráfico (magnitude da FFT)
-plot(frequencies, abs(fft_result));
-title('Magnitude da FFT');
-xlabel('Frequência [Hz]');
+
+% Exibindo os resultado
+subplot(3,1,2); 
+plot(frequencias_positivas, fft_positiva);
+title('FFT Amostrada em Bins');
+xlabel('Frequência (Hz)');
 ylabel('Magnitude');
 grid on;
-pause(15)
+pause(10)
+
+subplot(3,1,3); 
+plot(frequencias_positivas, fft_dcb);
+title('FFT Amostrada em Bins');
+xlabel('Frequência (Hz)');
+ylabel('Magnitude');
+grid on;
+pause(10)
