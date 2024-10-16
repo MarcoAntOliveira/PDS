@@ -3,23 +3,29 @@ addpath("funcoes/")
 
 % Criando um vetor de tempo correspondente às amostras
 t = (0:length(y)-1) / Fs;
-f1 = 1;
-x1 = 3*cos(2*pi*f1*t); 
-y1 = y + x1;
+
+% Gerando o sinal de ruído branco gaussiano
+ruido_amplitude = 0.5;  % Amplitude do ruído, você pode ajustar
+ruido = ruido_amplitude * randn(size(y));  % Ruído com média 0 e variância controlada
+
+% Adicionando o ruído ao sinal original
+y_com_ruido = y + ruido;
 
 % Plotando o áudio em função do tempo
 figure;
-title('Sinal de Áudio');
-subplot(2,1,1); 
+subplot(3,1,1); 
 plot(t, y);
 xlabel('Tempo (s)');
 ylabel('Amplitude');
+title('Sinal de Áudio Original');
 grid on;
 
-
-subplot(2,1,2); 
-plot(t, y1);
+% Sinal com ruído adicionado
+subplot(3,1,2); 
+plot(t, y_com_ruido);
 xlabel('Tempo (s)');
-ylabel('Amplitude com ruido');
+ylabel('Amplitude');
+title('Sinal de Áudio com Ruído');
 grid on;
+
 pause(10);
