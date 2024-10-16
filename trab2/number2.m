@@ -1,15 +1,22 @@
 addpath("funcoes/")
+pkg load signal
 [y, Fs] = audioread('trab2/train.wav');
 
 % Criando um vetor de tempo correspondente às amostras
-t = (0:length(y)-1) / Fs;
+t = (0:length(y)-1) / Fs
+
 
 % Gerando o sinal de ruído branco gaussiano
 ruido_amplitude = 0.5;  % Amplitude do ruído, você pode ajustar
 ruido = ruido_amplitude * randn(size(y));  % Ruído com média 0 e variância controlada
 
+wc_l = 500;
+wc_u = 1000;
 % Adicionando o ruído ao sinal original
 y_com_ruido = y + ruido;
+
+filt_bp = fir1(30,[wc_l wc_u]/(Fs/2)); %Projeto Band-Pass
+y_rec = filter(filt_bp,1,y_com_ruido);
 
 % Plotando o áudio em função do tempo
 figure;
@@ -23,6 +30,14 @@ grid on;
 % Sinal com ruído adicionado
 subplot(3,1,2); 
 plot(t, y_com_ruido);
+xlabel('Tempo (s)');
+ylabel('Amplitude');
+title('Sinal de Áudio com Ruído');
+grid on;
+
+%sinal filtrado
+subplot(3,1,3); 
+plot(t, y_rec);
 xlabel('Tempo (s)');
 ylabel('Amplitude');
 title('Sinal de Áudio com Ruído');
