@@ -11,7 +11,7 @@ t = linspace(0, T, N); % Vetor de tempo
 x1 = 3*cos(2*pi*f1*t); 
 x2 = cos(2*pi*f2*t - 0.3); 
 x3 = 2*cos(2*pi*f3*t + 2.4); 
-
+ 
 % Sinal resultante
 xt = x1 + x2 + x3;
 
