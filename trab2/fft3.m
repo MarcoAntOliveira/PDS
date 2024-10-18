@@ -2,8 +2,19 @@ addpath("funcoes/")
 
 % Implementação de SAFFT em uma imagem utilizando a função safft2
 
-% Ler a imagem
-imagem = imread('trab2/eli.jpg'); % Substitua pelo nome do arquivo de imagem
+imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
+[n_linhas, n_colunas, n_canais] = size(imagem);
+
+% Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
+if n_canais == 1
+    imshow(imagem);  % Imagem em escala de cinza
+elseif n_canais == 3
+    n = 3;  % Canal azul, por exemplo
+    imshow(imagem(:,:,n));  % Exibe o canal especificado
+else
+    disp('Imagem com número inesperado de canais');
+end
+
 
 % Converter a imagem para tons de cinza, se necessário
 if size(imagem, 3) == 3
@@ -13,7 +24,7 @@ else
 end
 
 % Definir o tamanho do bloco para o SAFFT
-bloco_tamanho = 64;  % Tamanho do bloco adaptável
+bloco_tamanho = 1024;  % Tamanho do bloco adaptável
 
 % Aplicar o SAFFT usando a função safft2
 safft_resultado = safft2(imagem_cinza, bloco_tamanho);
@@ -25,11 +36,15 @@ safft_resultado_shifted = fftshift(safft_resultado);
 magnitude_safft = log(1 + abs(safft_resultado_shifted));
 
 % Mostrar a imagem original e a SAFFT
-subplot(1, 2, 1);
+subplot(3, 2, 1);
 imshow(imagem_cinza);
 title('Imagem Original em Tons de Cinza');
 
-subplot(1, 2, 2);
+subplot(3, 2, 2);
+imshow(magnitude_safft, []);
+title('Magnitude da SAFFT da Imagem');
+
+subplot(3, 2, 2);
 imshow(magnitude_safft, []);
 title('Magnitude da SAFFT da Imagem');
 
