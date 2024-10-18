@@ -25,7 +25,7 @@ function X = fft_recursive(x)
     
     % Calcula a FFT combinada usando as simetrias da DFT
     for k = 1:n/2
-        t = exp(-2i * pi * (k-1) / n) * X_odd(k);
+        t = exp(-2*i * pi * (k-1) / n) * X_odd(k);
         X(k) = X_even(k) + t;
         X(k + n/2) = X_even(k) - t;
     end
