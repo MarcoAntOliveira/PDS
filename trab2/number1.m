@@ -44,8 +44,10 @@ grid on;
 
 % c) Calcular magnitude em dB
 fft_dcb = mag2db(fft_positiva); % Convertendo a magnitude para dB
+%d)Comente o novo resultado em Hertz comparando ao resultado em bins. No eixo das ordenadas, a magnitude está multiplicada também por 𝑁⁄2
 
-% d) Plote o gráfico com a magnitude em decibéis
+
+% e) Plote o gráfico com a magnitude em decibéis
 subplot(3,1,3); 
 plot(frequencias_positivas, fft_dcb);
 xlabel('Frequência (Hz)');
