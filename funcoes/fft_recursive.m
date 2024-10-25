@@ -17,7 +17,7 @@ function X = fft_recursive(x)
     x_odd = x(2:2:n);  % Elementos de índice ímpar
     
     % Recursivamente calcula a FFT dos elementos pares e ímpares
-    X_even = fft_recursive(x_even);
+    X_even = fft_recursive(x_ekzven);
     X_odd = fft_recursive(x_odd);
     
     % Pré-alocação do vetor de saída
