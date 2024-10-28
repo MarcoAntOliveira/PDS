@@ -1,5 +1,6 @@
 addpath("funcoes/")
 pkg load communications
+pkg load image
 % g. Em um novo script (exemplo: Q3.3), faça novamente o procedimento para
 % obter a magnitude e a fase da imagem em escala de cinzas. Porém, agora você
 % deverá gerar um ruído branco (use a função wgn) com uma potência de 90
@@ -10,7 +11,7 @@ pkg load communications
 % h. Aplique o ruído branco e realize a inversa da FFT bidimensional e não esqueça
 % de incluir a fase nesse processo (Magnitude.*exp(i*Fase))+ ruído.
 
-imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
+imagem = imread('trab2/lena_std(1).tif');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
 
 % Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
@@ -52,14 +53,14 @@ imagem_ruido_branco_shifted = ifftshift(imagem_ruido_branco);  % Shift inverso
 imagem_rec_ruido_branco = real(ifft2(imagem_ruido_branco_shifted));  % FFT inversa
 
 figure;
-subplot(1, 2, 1);
+subplot(3, 2, 1);
 imshow(imagem_cinza);
 title('Imagem Original em Tons de Cinza');
 
-subplot(1, 2, 2);
+subplot(3, 2, 2);
 imshow(imagem_rec_ruido_branco, []);
 title('Imagem com Ruído Branco Gaussiano');
-pause(15);
+
 
 
 
@@ -68,26 +69,19 @@ pause(15);
 % Adicionar ruído "salt & pepper" com densidade 0.2
 imagem_salt_pepper = imnoise(imagem_cinza, 'salt & pepper', 0.2);
 
-figure;
-subplot(1, 2, 1);
-imshow(imagem_cinza);
-title('Imagem Original em Tons de Cinza');
 
-subplot(1, 2, 2);
+subplot(3, 2, 3);
 imshow(imagem_salt_pepper);
 title('Imagem com Ruído Salt & Pepper');
-pause(10);
+
 % j. Crie outra imagem incluindo outro ruído, agora o ruído tipo “speckle”
 % diretamente a imagem em escala de cinzas. Você pode usar a função;
 % Adicionar ruído "speckle"
 imagem_speckle = imnoise(imagem_cinza, 'speckle');
 
-figure;
-subplot(1, 2, 1);
-imshow(imagem_cinza);
-title('Imagem Original em Tons de Cinza');
 
-subplot(1, 2, 2);
+
+subplot(3, 2, 4);
 imshow(imagem_speckle);
 title('Imagem com Ruído Speckle');
 pause(10);
