@@ -27,31 +27,38 @@ frequencias_positivas = (0:(n/2)-1)*(fs/n);
 
 % a) Plote o sinal no domínio do tempo.
 figure;
-subplot(3,1,1); % Primeiro gráfico (domínio do tempo)
-plot(t, xt);
-title('Sinal no domínio do tempo');
-xlabel('Tempo [s]');
-ylabel('Amplitude');
-grid on;
+% subplot(3,1,1); % Primeiro gráfico (domínio do tempo)
+% plot(t, xt);
+% title('Sinal no domínio do tempo');
+% xlabel('Tempo [s]');
+% ylabel('Amplitude');
+% grid on;
 
-% b) Realize a FFT e plote o sinal no domínio da frequência (em bins)
-subplot(3,1,2); 
-plot(frequencias_positivas, fft_positiva);
-title('FFT Amostrada em Bins');
-xlabel('Frequência (Hz)');
-ylabel('Magnitude');
-grid on;
 
-% c) Calcular magnitude em dB
+% % b) Realize a FFT e plote o sinal no domínio da frequência (em bins)
+% subplot(3,1,2); 
+% plot(frequencias_positivas, fft_positiva);
+% title('FFT Amostrada em Bins');
+% xlabel('Frequência (Hz)');
+% ylabel('Magnitude');
+% grid on;
+
+% c) Sabemos que a resolução em frequência depende da relação entre taxa de
+% amostragem dividida pelo comprimento da FFT, de modo que frequência em bins
+% pode ser facilmente convertida em frequência em Hz.
+% Atualize o eixo das abscissas para uma representação em Hz. Apresente o gráfico
+% da resposta em frequência.
 fft_dcb = mag2db(fft_positiva); % Convertendo a magnitude para dB
-%d)Comente o novo resultado em Hertz comparando ao resultado em bins. No eixo das ordenadas, a magnitude está multiplicada também por 𝑁⁄2
+% %d)Comente o novo resultado em Hertz comparando ao resultado em bins. No eixo das ordenadas, a magnitude está multiplicada também por 𝑁⁄2
 
 
-% e) Plote o gráfico com a magnitude em decibéis
-subplot(3,1,3); 
-plot(frequencias_positivas, fft_dcb);
-xlabel('Frequência (Hz)');
-ylabel('Magnitude (dB)');
-title('Magnitude em dB da Resposta em Frequência');
-grid on;
+% % e) Plote o gráfico com a magnitude em decibéis
+% subplot(3,1,3); 
+% plot(frequencias_positivas, fft_dcb);
+% xlabel('Frequência (Hz)');
+% ylabel('Magnitude (dB)');
+% title('Magnitude em dB da Resposta em Frequência');
+% grid on;
 pause(10);
+
+print("trab2/2.1_a).png", "-dpng");
