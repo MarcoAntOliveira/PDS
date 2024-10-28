@@ -6,6 +6,10 @@ pkg load communications
 % dBW. O sinal ruído branco deve ter as mesmas dimensões da imagem.
 % Implementação de SAFFT em uma imagem utilizando a função safft2
 
+
+% h. Aplique o ruído branco e realize a inversa da FFT bidimensional e não esqueça
+% de incluir a fase nesse processo (Magnitude.*exp(i*Fase))+ ruído.
+
 imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
 
@@ -59,9 +63,8 @@ pause(15);
 
 
 
-
-% h. Aplique o ruído branco e realize a inversa da FFT bidimensional e não esqueça
-% de incluir a fase nesse processo (Magnitude.*exp(i*Fase))+ ruído.
+% i. Repita o processo, agora adicionando o ruído tipo “salt & pepper” com uma
+% densidade de 0.2 diretamente a imagem em escala de cinzas.;
 % Adicionar ruído "salt & pepper" com densidade 0.2
 imagem_salt_pepper = imnoise(imagem_cinza, 'salt & pepper', 0.2);
 
@@ -74,9 +77,8 @@ subplot(1, 2, 2);
 imshow(imagem_salt_pepper);
 title('Imagem com Ruído Salt & Pepper');
 pause(10);
-
-% i. Repita o processo, agora adicionando o ruído tipo “salt & pepper” com uma
-% densidade de 0.2 diretamente a imagem em escala de cinzas.;
+% j. Crie outra imagem incluindo outro ruído, agora o ruído tipo “speckle”
+% diretamente a imagem em escala de cinzas. Você pode usar a função;
 % Adicionar ruído "speckle"
 imagem_speckle = imnoise(imagem_cinza, 'speckle');
 
@@ -88,6 +90,4 @@ title('Imagem Original em Tons de Cinza');
 subplot(1, 2, 2);
 imshow(imagem_speckle);
 title('Imagem com Ruído Speckle');
-
-% j. Crie outra imagem incluindo outro ruído, agora o ruído tipo “speckle”
-% diretamente a imagem em escala de cinzas. Você pode usar a função;
+pause(10);
