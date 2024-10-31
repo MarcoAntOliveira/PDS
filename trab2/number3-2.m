@@ -6,58 +6,36 @@ imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
 % imshow(imagem); 
 
-% Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
-if n_canais == 1
-    disp('1');
-    imshow(imagem);  % Imagem em escala de cinza
-elseif n_canais == 3
-    disp('3');
-    canal = 3;  % Exibir o canal vermelho, por exemplo
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-3.png", "-dpng");
-    
 
-    canal = 2;
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-2.png", "-dpng");
-    
-    canal = 1;
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-1.png", "-dpng");
+% Converter a imagem para tons de cinza, se necessário
+if size(imagem, 3) == 3
+    imagem_cinza = rgb2gray(imagem);
 else
-    disp('Imagem com número inesperado de canais');
+    imagem_cinza = imagem;
 end
 
+% Definir o tamanho do bloco para o SAFFT
+bloco_tamanho = 1024;  % Tamanho do bloco adaptável
 
-% % Converter a imagem para tons de cinza, se necessário
-% if size(imagem, 3) == 3
-%     imagem_cinza = rgb2gray(imagem);
-% else
-%     imagem_cinza = imagem;
-% end
+% Aplicar o SAFFT usando a função safft2
+safft_resultado = safft2(imagem_cinza, bloco_tamanho);
 
-% % Definir o tamanho do bloco para o SAFFT
-% bloco_tamanho = 1024;  % Tamanho do bloco adaptável
+% Centralizar o espectro de cada bloco
+safft_resultado_shifted = fftshift(safft_resultado);
 
-% % Aplicar o SAFFT usando a função safft2
-% safft_resultado = safft2(imagem_cinza, bloco_tamanho);
+% Calcular a magnitude da SAFFT
+magnitude_safft = log(1 + abs(safft_resultado_shifted));
+angle_safft = angle(safft_resultado_shifted);
 
-% % Centralizar o espectro de cada bloco
-% safft_resultado_shifted = fftshift(safft_resultado);
+% Mostrar a imagem original e a SAFFT
+figure;
+subplot(3, 2, 1);
+imshow(abs(safft_resultado), []);
+title('Magnitude da SAFFT da Imagem');
 
-% % Calcular a magnitude da SAFFT
-% magnitude_safft = log(1 + abs(safft_resultado_shifted));
-% angle_safft = angle(safft_resultado_shifted);
-
-% % Mostrar a imagem original e a SAFFT
-% figure;
-% subplot(3, 2, 1);
-% imshow(abs(safft_resultado), []);
-% title('Magnitude da SAFFT da Imagem');
-
-% subplot(3, 2, 2);
-% imshow(angle(safft_resultado));
-% title('Magnitude da SAFFT da Imagem');
+subplot(3, 2, 2);
+imshow(angle(safft_resultado));
+title('Magnitude da SAFFT da Imagem');
 
 
 % subplot(3, 2, 3);
@@ -114,5 +92,5 @@ end
 % imshow(imagem_fase_only, []);
 % title('Imagem Reconstruída (Apenas Fase)');
 
-
-print("trab2/2.3_a).png", "-dpng");
+pause(10);
+% print("trab2/2.3_a).png", "-dpng");
