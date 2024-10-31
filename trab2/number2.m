@@ -38,51 +38,53 @@ frequencias = (0:length(Y_rec_fft)-1) * (Fs / length(Y_rec_fft));
 
 % a) Plote o sinal original no domínio do tempo
 figure;
-subplot(3,1,1); 
-plot(t, y);
-xlabel('Tempo (s)');
-ylabel('Amplitude');
-title('Sinal de Áudio Original');
-grid on;
+% subplot(3,1,1); 
+% plot(t, y);
+% xlabel('Tempo (s)');
+% ylabel('Amplitude');
+% title('Sinal de Áudio Original');
+% grid on;
 
-% b) Plote o sinal com ruído adicionado
-subplot(3,1,2); 
-plot(t, y_com_ruido);
-xlabel('Tempo (s)');
-ylabel('Amplitude');
-title('Sinal de Áudio com Ruído');
-grid on;
+% % b) Plote o sinal com ruído adicionado
+% % subplot(3,1,2); 
+% plot(t, y_com_ruido);
+% xlabel('Tempo (s)');
+% ylabel('Amplitude');
+% title('Sinal de Áudio com Ruído');
+% grid on;
 
-% c) Plote a magnitude do sinal recuperado no domínio da frequência
-subplot(3,1,3); 
-plot(frequencias, abs(Y_rec_fft));
-xlabel('Frequência (Hz)');
-ylabel('Magnitude');
-title('Magnitude do Sinal Recuperado');
-grid on;
+% % c) Plote a magnitude do sinal recuperado no domínio da frequência
+% % subplot(3,1,3); 
+% plot(frequencias, abs(Y_rec_fft));
+% xlabel('Frequência (Hz)');
+% ylabel('Magnitude');
+% title('Magnitude do Sinal Recuperado');
+% grid on;
 
-% d) Plote a fase do sinal recuperado no domínio da frequência
-subplot(3,1,1); 
+% % d) Plote a fase do sinal recuperado no domínio da frequência
+% subplot(3,1,1); 
 plot(frequencias, angle(Y_rec_fft));
 xlabel('Frequência (Hz)');
 ylabel('Fase (radianos)');
 title('Fase do Sinal Recuperado');
 grid on;
 
-% e) Plote a fase do sinal original no tempo
-subplot(3,1,2); 
-plot(t, angle(y));
-xlabel('Tempo (s)');
-ylabel('Amplitude');
-title('Fase do Sinal Original');
-grid on;
+% % e) Plote a fase do sinal original no tempo
+% subplot(3,1,2); 
+% plot(t, angle(y));
+% xlabel('Tempo (s)');
+% ylabel('Amplitude');
+% title('Fase do Sinal Original');
+% grid on;
 
-% Sinal recuperado no tempo
-subplot(3,1,3); 
-plot(t, y_rec);
-xlabel('Tempo (s)');
-ylabel('Amplitude');
-title('Sinal Recuperado no Tempo');
-grid on;
+% % Sinal recuperado no tempo
+% subplot(3,1,3); 
+% plot(t, y_rec);
+% xlabel('Tempo (s)');
+% ylabel('Amplitude');
+% title('Sinal Recuperado no Tempo');
+% grid on;
 
-pause(10);
+
+
+print("trab2/2.2_a).png", "-dpng");
