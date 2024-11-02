@@ -14,15 +14,16 @@ pkg load image
 imagem = imread('trab2/lena_std(1).tif');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
 
-% Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
-if n_canais == 1
-    imshow(imagem);  % Imagem em escala de cinza
-elseif n_canais == 3
-    n = 3;  % Canal azul, por exemplo
-    imshow(imagem(:,:,n));  % Exibe o canal especificado
-else
-    disp('Imagem com número inesperado de canais');
-end
+
+% % Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
+% if n_canais == 1
+%     imshow(imagem);  % Imagem em escala de cinza
+% elseif n_canais == 3
+%     n = 3;  % Canal azul, por exemplo
+%     imshow(imagem(:,:,n));  % Exibe o canal especificado
+% else
+%     disp('Imagem com número inesperado de canais');
+% end
 
 
 % Converter a imagem para tons de cinza, se necessário
@@ -47,41 +48,43 @@ angle_safft = angle(safft_resultado_shifted);
 % Gerar ruído branco com potência de 90 dBW
 ruido_branco = wgn(n_linhas, n_colunas, 90, 'linear');
 
-% Adicionar o ruído à magnitude da SAFFT
-imagem_ruido_branco = magnitude_safft.* exp(1i * angle_safft) + ruido_branco;
-imagem_ruido_branco_shifted = ifftshift(imagem_ruido_branco);  % Shift inverso
-imagem_rec_ruido_branco = real(ifft2(imagem_ruido_branco_shifted));  % FFT inversa
+% % Adicionar o ruído à magnitude da SAFFT
+% imagem_ruido_branco = magnitude_safft.* exp(1i * angle_safft) + ruido_branco;
+% imagem_ruido_branco_shifted = ifftshift(imagem_ruido_branco);  % Shift inverso
+% imagem_rec_ruido_branco = real(ifft2(imagem_ruido_branco_shifted));  % FFT inversa
 
 figure;
-subplot(3, 2, 1);
-imshow(imagem_cinza);
-title('Imagem Original em Tons de Cinza');
+% subplot(1, 2, 1);
+% imshow(imagem_cinza);
+% title('Imagem Original em Tons de Cinza');
 
-subplot(3, 2, 2);
-imshow(imagem_rec_ruido_branco, []);
-title('Imagem com Ruído Branco Gaussiano');
-
-
+% subplot(1, 2, 2);
+% imshow(imagem_rec_ruido_branco, []);
+% title('Imagem com Ruído Branco Gaussiano');
 
 
-% i. Repita o processo, agora adicionando o ruído tipo “salt & pepper” com uma
-% densidade de 0.2 diretamente a imagem em escala de cinzas.;
+
+
+% % i. Repita o processo, agora adicionando o ruído tipo “salt & pepper” com uma
+% % densidade de 0.2 diretamente a imagem em escala de cinzas.;
 % Adicionar ruído "salt & pepper" com densidade 0.2
 imagem_salt_pepper = imnoise(imagem_cinza, 'salt & pepper', 0.2);
 
 
-subplot(3, 2, 3);
-imshow(imagem_salt_pepper);
-title('Imagem com Ruído Salt & Pepper');
+% % subplot(3, 2, 3);
+% imshow(imagem_salt_pepper);
+% title('Imagem com Ruído Salt & Pepper');
 
-% j. Crie outra imagem incluindo outro ruído, agora o ruído tipo “speckle”
-% diretamente a imagem em escala de cinzas. Você pode usar a função;
-% Adicionar ruído "speckle"
+% % j. Crie outra imagem incluindo outro ruído, agora o ruído tipo “speckle”
+% % diretamente a imagem em escala de cinzas. Você pode usar a função;
+% % Adicionar ruído "speckle"
 imagem_speckle = imnoise(imagem_cinza, 'speckle');
 
 
 
-subplot(3, 2, 4);
+% subplot(3, 2, 4);
 imshow(imagem_speckle);
 title('Imagem com Ruído Speckle');
 pause(10);
+
+print("trab2/2.3_i).png", "-dpng");

@@ -1,8 +1,9 @@
 pkg load control
 
+% Parâmetros
 f1 = 1; f2 = 2; f3 = 3;
 fs = 1000; % Frequência de amostragem
-T = 1.5;  % Tempo total de amostragem
+T = 1.5;   % Tempo total de amostragem
 N = T * fs; % Número total de amostras
 t = linspace(0, T, N); % Vetor de tempo
 
@@ -10,55 +11,53 @@ t = linspace(0, T, N); % Vetor de tempo
 x1 = 3*cos(2*pi*f1*t); 
 x2 = cos(2*pi*f2*t - 0.3); 
 x3 = 2*cos(2*pi*f3*t + 2.4); 
- 
+
 % Sinal resultante
 xt = x1 + x2 + x3;
 
-% Aplicação da FFT (usando potência de 2 para otimizar)
-n = 2^nextpow2(length(xt)); % Próxima potência de 2
-sinal_padded = [xt, zeros(1, n - length(xt))]; % Preenchimento com zeros
-
-% Calculando a FFT
-fft_result = fft(sinal_padded);
-fft_positiva = abs(fft_result(1:n/2)); % Magnitude da FFT (metade positiva)
-
-% Frequências correspondentes para FFT positiva
-frequencias_positivas = (0:(n/2)-1)*(fs/n);
-
-% a) Plote o sinal no domínio do tempo.
+% a) Sinal no domínio do tempo
 figure;
-% subplot(3,1,1); % Primeiro gráfico (domínio do tempo)
+% subplot(4,1,1);
 % plot(t, xt);
-% title('Sinal no domínio do tempo');
+% title('a) Sinal no domínio do tempo');
 % xlabel('Tempo [s]');
 % ylabel('Amplitude');
 % grid on;
 
+% b) FFT e plotagem no domínio da frequência em bins
+n = 2^nextpow2(length(xt)); % Próxima potência de 2 para FFT
+sinal_padded = [xt, zeros(1, n - length(xt))]; % Preenchimento com zeros
 
-% % b) Realize a FFT e plote o sinal no domínio da frequência (em bins)
-% subplot(3,1,2); 
+fft_result = fft(sinal_padded); % Calculando a FFT
+fft_positiva = abs(fft_result(1:n/2)) * (2/N); % Magnitude (apenas metade positiva)
+
+% % subplot(4,1,2);
+% plot(0:(n/2)-1, fft_positiva); % Eixo x em bins
+% title('b) FFT no domínio da frequência em bins');
+% xlabel('Bins');
+% ylabel('Magnitude');
+% grid on;
+
+% c) Frequência em Hz no eixo x
+frequencias_positivas = (0:(n/2)-1)*(fs/n); % Convertendo para Hz
+
+% % subplot(4,1,3);
 % plot(frequencias_positivas, fft_positiva);
-% title('FFT Amostrada em Bins');
+% title('c) FFT no domínio da frequência em Hz');
 % xlabel('Frequência (Hz)');
 % ylabel('Magnitude');
 % grid on;
 
-% c) Sabemos que a resolução em frequência depende da relação entre taxa de
-% amostragem dividida pelo comprimento da FFT, de modo que frequência em bins
-% pode ser facilmente convertida em frequência em Hz.
-% Atualize o eixo das abscissas para uma representação em Hz. Apresente o gráfico
-% da resposta em frequência.
+% d) Magnitude em dB da resposta em frequência
 fft_dcb = mag2db(fft_positiva); % Convertendo a magnitude para dB
-% %d)Comente o novo resultado em Hertz comparando ao resultado em bins. No eixo das ordenadas, a magnitude está multiplicada também por 𝑁⁄2
 
+% % subplot(4,1,4);
+plot(frequencias_positivas, fft_dcb);
+xlabel('Frequência (Hz)');
+ylabel('Magnitude (dB)');
+title('d) Magnitude em dB da Resposta em Frequência');
+grid on;
 
-% % e) Plote o gráfico com a magnitude em decibéis
-% subplot(3,1,3); 
-% plot(frequencias_positivas, fft_dcb);
-% xlabel('Frequência (Hz)');
-% ylabel('Magnitude (dB)');
-% title('Magnitude em dB da Resposta em Frequência');
-% grid on;
-pause(10);
-
-print("trab2/2.1_a).png", "-dpng");
+% Salvar a figura
+print("trab2/2.1.png", "-dpng");
+% pause(10);

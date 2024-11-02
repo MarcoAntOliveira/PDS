@@ -4,29 +4,29 @@ addpath("funcoes/")
 
 imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
-% imshow(imagem); 
+imshow(imagem); 
 
-% Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
-if n_canais == 1
-    disp('1');
-    imshow(imagem);  % Imagem em escala de cinza
-elseif n_canais == 3
-    disp('3');
-    canal = 3;  % Exibir o canal vermelho, por exemplo
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-3.png", "-dpng");
+% % Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
+% if n_canais == 1
+%     disp('1');
+%     imshow(imagem);  % Imagem em escala de cinza
+% elseif n_canais == 3
+%     disp('3');
+%     canal = 3;  % Exibir o canal vermelho, por exemplo
+%     imshow(imagem(:,:,canal));  % Exibe o canal especificado 
+%     print("trab2/2.3_b)-3.png", "-dpng");
     
 
-    canal = 2;
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-2.png", "-dpng");
+%     canal = 2;
+%     imshow(imagem(:,:,canal));  % Exibe o canal especificado 
+%     print("trab2/2.3_b)-2.png", "-dpng");
     
-    canal = 1;
-    imshow(imagem(:,:,canal));  % Exibe o canal especificado 
-    print("trab2/2.3_b)-1.png", "-dpng");
-else
-    disp('Imagem com número inesperado de canais');
-end
+%     canal = 1;
+%     imshow(imagem(:,:,canal));  % Exibe o canal especificado 
+%     print("trab2/2.3_b)-1.png", "-dpng");
+% else
+%     disp('Imagem com número inesperado de canais');
+% end
 
 
 % % Converter a imagem para tons de cinza, se necessário

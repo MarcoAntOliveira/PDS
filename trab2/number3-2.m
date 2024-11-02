@@ -18,7 +18,8 @@ end
 bloco_tamanho = 1024;  % Tamanho do bloco adaptável
 
 % Aplicar o SAFFT usando a função safft2
-safft_resultado = safft2(imagem_cinza, bloco_tamanho);
+% safft_resultado = safft2(imagem_cinza, bloco_tamanho);
+safft_resultado = fft2(imagem_cinza, bloco_tamanho);
 
 % Centralizar o espectro de cada bloco
 safft_resultado_shifted = fftshift(safft_resultado);
@@ -27,29 +28,34 @@ safft_resultado_shifted = fftshift(safft_resultado);
 magnitude_safft = log(1 + abs(safft_resultado_shifted));
 angle_safft = angle(safft_resultado_shifted);
 
+
+
 % Mostrar a imagem original e a SAFFT
 figure;
-subplot(3, 2, 1);
-imshow(abs(safft_resultado), []);
-title('Magnitude da SAFFT da Imagem');
 
-subplot(3, 2, 2);
-imshow(angle(safft_resultado));
-title('Magnitude da SAFFT da Imagem');
+% imshow(imagem_cinza);
+% title('Informação unidimensional');
+
+% subplot(1, 2, 1);
+% imshow(abs(safft_resultado), []);
+% title('Magnitude da SAFFT da Imagem');
+
+% subplot(1, 2, 2);
+% imshow(angle(safft_resultado));
+% title('Magnitude da SAFFT da Imagem');
 
 
 % subplot(3, 2, 3);
 % imshow(imagem_cinza);
 % title('Imagem Original em Tons de Cinza');
 
-
-% subplot(3, 2, 4);
+% subplot(1, 2, 1);
 % imshow(magnitude_safft, []);
 % title('Magnitude da SAFFT da Imagem');
 
-% subplot(3, 2, 5);
+% subplot(1, 2, 2);
 % imshow(angle_safft);
-% title('Magnitude da SAFFT da Imagem');
+% title('Fase da SAFFT da Imagem');
 
 % subplot(3, 2, 6);
 % mesh(magnitude_safft);
@@ -61,36 +67,31 @@ title('Magnitude da SAFFT da Imagem');
 % % ifftshift). Depois faça a inversa apenas da fase (aqui faça a inversa de
 % % exp(i*Fase)). Plote os resultados. O que você pode concluir com esse
 % % resultado?
-% F_shifted = fftshift(safft_resultado);
+% Transformada e deslocamento de FFT
+F_shifted = fftshift(safft_resultado);  
+magnitude = abs(F_shifted); 
+fase = angle(F_shifted);      
 
-% % Calcular a magnitude e a fase da FFT
-% magnitude = abs(F_shifted);
-% fase = angle(F_shifted);    
+% Reconstruir a imagem usando apenas a magnitude (fase uniforme)
+fase_uniforme = zeros(size(fase));  
+F_mag_only = magnitude .* exp(1i * fase_uniforme);  
+F_mag_only_shifted = ifftshift(F_mag_only);  
+imagem_mag_only = real(ifft2(F_mag_only_shifted));  
 
-% % Reconstruir a imagem usando apenas a magnitude (com fase uniforme)
-% fase_uniforme = zeros(size(fase)); % fase uniforme = 0
-% F_mag_only = magnitude .* exp(1i * fase_uniforme);
-% F_mag_only_shifted = ifftshift(F_mag_only); % shift inverso
-% imagem_mag_only = real(ifft2(F_mag_only_shifted)); % FFT inversa
+% Reconstruir a imagem usando apenas a fase (magnitude uniforme)
+magnitude_uniforme = ones(size(magnitude));  
+F_fase_only = magnitude_uniforme .* exp(1i * fase);  
+F_fase_only_shifted = ifftshift(F_fase_only);  
+imagem_fase_only = real(ifft2(F_fase_only_shifted));  
 
-% % Reconstruir a imagem usando apenas a fase (com magnitude uniforme)
-% magnitude_uniforme = ones(size(magnitude)); % magnitude uniforme = 1
-% F_fase_only = magnitude_uniforme .* exp(1i * fase);
-% F_fase_only_shifted = ifftshift(F_fase_only); % shift inverso
-% imagem_fase_only = real(ifft2(F_fase_only_shifted)); % FFT inversa
+% Normalizar imagens para exibição
+imagem_mag_only = (imagem_mag_only - min(imagem_mag_only(:))) / (max(imagem_mag_only(:)) - min(imagem_mag_only(:)));
+imagem_fase_only = (imagem_fase_only - min(imagem_fase_only(:))) / (max(imagem_fase_only(:)) - min(imagem_fase_only(:)));
 
-% figure;
-% subplot(2, 2, 1);
-% imshow(imagem_cinza);
-% title('Imagem Original em Tons de Cinza');
 
-% subplot(2, 2, 2);
-% imshow(imagem_mag_only, []);
-% title('Imagem Reconstruída (Apenas Magnitude)');
-
-% subplot(2, 2, 3);
-% imshow(imagem_fase_only, []);
-% title('Imagem Reconstruída (Apenas Fase)');
+subplot(2, 2, 1); imshow(imagem_cinza); title('Imagem Original em Tons de Cinza');  
+subplot(2, 2, 2); imshow(imagem_mag_only); title('Imagem Reconstruída (Apenas Magnitude)');  
+subplot(2, 2, 3); imshow(imagem_fase_only, []); title('Imagem Reconstruída (Apenas Fase)');  
 
 pause(10);
 % print("trab2/2.3_a).png", "-dpng");
