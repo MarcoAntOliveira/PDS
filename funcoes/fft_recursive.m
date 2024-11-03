@@ -17,7 +17,7 @@ function X = fft_recursive(x)
     x_odd = x(2:2:n);  % Elementos de índice ímpar
     
     % Recursivamente calcula a FFT dos elementos pares e ímpares
-    X_even = fft_recursive(x_ekzven);
+    X_even = fft_recursive(x_even);
     X_odd = fft_recursive(x_odd);
     
     % Pré-alocação do vetor de saída
@@ -25,10 +25,8 @@ function X = fft_recursive(x)
     
     % Calcula a FFT combinada usando as simetrias da DFT
     for k = 1:n/2
-        t = exp(-2*i * pi * (k-1) / n) * X_odd(k);
+        t = exp(-2 * 1i * pi * (k-1) / n) * X_odd(k);
         X(k) = X_even(k) + t;
         X(k + n/2) = X_even(k) - t;
     end
 end
-
-                
