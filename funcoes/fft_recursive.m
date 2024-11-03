@@ -27,6 +27,9 @@ function X = fft_recursive(x)
     for k = 1:n/2
         t = exp(-2 * 1i * pi * (k-1) / n) * X_odd(k);
         X(k) = X_even(k) + t;
-        X(k + n/2) = X_even(k) - t;
+        X(k + n/2) = X_even(k) - t;        
     end
 end
+
+
+
