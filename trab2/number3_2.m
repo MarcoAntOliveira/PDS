@@ -7,9 +7,47 @@ pkg load image
 % dBW. O sinal ruído branco deve ter as mesmas dimensões da imagem.
 % Implementação de SAFFT em uma imagem utilizando a função safft2
 
+imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
+[n_linhas, n_colunas, n_canais] = size(imagem);
 
+% % Converter a imagem para tons de cinza, se necessário
+if size(imagem, 3) == 3
+    imagem_cinza = rgb2gray(imagem);
+else
+    imagem_cinza = imagem;
+end
+
+% % Definir o tamanho do bloco para o SAFFT
+bloco_tamanho = 1024;  % Tamanho do bloco adaptável
+
+% % Aplicar o SAFFT usando a função safft2
+safft_resultado = safft2(imagem_cinza, bloco_tamanho);
+
+% % Centralizar o espectro de cada bloco
+safft_resultado_shifted = fftshift(safft_resultado);
 % h. Aplique o ruído branco e realize a inversa da FFT bidimensional e não esqueça
 % de incluir a fase nesse processo (Magnitude.*exp(i*Fase))+ ruído.
+% Transformada e deslocamento de FFT
+F_shifted = fftshift(safft_resultado);  
+magnitude = abs(F_shifted); 
+fase = angle(F_shifted);      
+
+% Aplicar ruído branco (ruído aditivo gaussiano) na magnitude e fase
+ruido_magnitude = magnitude + 0.05 * randn(size(magnitude)); % ajuste o valor de 0.05 conforme desejado para a intensidade do ruído
+ruido_fase = fase + 0.05 * randn(size(fase));  % adição de ruído na fase também
+
+% Reconstruir com ruído na FFT inversa
+F_com_ruido = ruido_magnitude .* exp(1i * ruido_fase);  % combinação de magnitude e fase com ruído
+F_com_ruido_shifted = ifftshift(F_com_ruido);  % shift inverso
+imagem_com_ruido = real(ifft2(F_com_ruido_shifted));  % transformada inversa de Fourier
+
+% Exibir resultados
+figure;
+subplot(1, 3, 1); imshow(imagem_cinza); title('Imagem Original em Tons de Cinza');
+subplot(1, 3, 2); imshow(imagem_mag_only, []); title('Imagem com Apenas Magnitude');
+subplot(1, 3, 3); imshow(imagem_com_ruido, []); title('Imagem Reconstruída com Ruído');
+
+
 
 imagem = imread('trab2/lena_std(1).tif');  % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
@@ -82,9 +120,9 @@ imagem_speckle = imnoise(imagem_cinza, 'speckle');
 
 
 
-% subplot(3, 2, 4);
-imshow(imagem_speckle);
-title('Imagem com Ruído Speckle');
-pause(10);
+% % subplot(3, 2, 4);
+% imshow(imagem_speckle);
+% title('Imagem com Ruído Speckle');
+% pause(10);
 
-print("trab2/2.3_i).png", "-dpng");
+print("trab2/2.3_h).png", "-dpng");

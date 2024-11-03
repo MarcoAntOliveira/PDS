@@ -54,20 +54,42 @@ figure;
 % grid on;
 
 % % c) Plote a magnitude do sinal recuperado no domínio da frequência
-% % subplot(3,1,3); 
+% Resposta em frequência do filtro projetado
+[H, w] = freqz(filt_bp, 1, 1024, Fs); % Calcula a resposta em frequência do filtro
+
+% Plotando a magnitude da resposta em frequência
+figure;
+subplot(1, 2, 1);
+plot(w, abs(H));
+title('Magnitude da Resposta em Frequência do Filtro Passa-Banda');
+xlabel('Frequência (Hz)');
+ylabel('Magnitude');
+grid on;
+
+% Plotando a fase da resposta em frequência
+subplot(1, 2, 2);
+plot(w, angle(H));
+title('Fase da Resposta em Frequência do Filtro Passa-Banda');
+xlabel('Frequência (Hz)');
+ylabel('Fase (radianos)');
+grid on;
+
+
+
+% % d) Plote a fase do sinal recuperado no domínio da frequência
+% subplot(1,2,1); 
 % plot(frequencias, abs(Y_rec_fft));
 % xlabel('Frequência (Hz)');
 % ylabel('Magnitude');
 % title('Magnitude do Sinal Recuperado');
 % grid on;
 
-% % d) Plote a fase do sinal recuperado no domínio da frequência
-% subplot(3,1,1); 
-plot(frequencias, angle(Y_rec_fft));
-xlabel('Frequência (Hz)');
-ylabel('Fase (radianos)');
-title('Fase do Sinal Recuperado');
-grid on;
+% subplot(1,2,2); 
+% plot(frequencias, angle(Y_rec_fft));
+% xlabel('Frequência (Hz)');
+% ylabel('Fase');
+% title('Fase do Sinal Recuperado');
+% grid on;
 
 % % e) Plote a fase do sinal original no tempo
 % subplot(3,1,2); 
@@ -87,4 +109,4 @@ grid on;
 
 
 
-print("trab2/2.2_a).png", "-dpng");
+print("trab2/2.2_d).png", "-dpng");

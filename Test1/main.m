@@ -1,4 +1,5 @@
 clear all; 
+pkg load control
 addpath('funcoes/')
 %-------------------------------------------------------------------------------------------
 % Parâmetros do sinal
@@ -33,7 +34,9 @@ noise_amplitude = 0.5;  % Amplitude do ruído
 x = sin(2 * pi * f1 * t) + sin(2 * pi * f2 * t) + noise_amplitude * randn(size(t));
 %--------------------------------------------------------------------------------------
 % Aplicação da FFT
+
 X = fft(x);
+
 N = length(x);        % Número de pontos na FFT
 X_magnitude = abs(X/N); % Magnitude da FFT
 X_magnitude = X_magnitude(1:N/2+1); % Mantém apenas a metade positiva do espectro
@@ -91,7 +94,7 @@ C_fase = C_fase(1:next_pow2/2+1);  % Mantém a metade positiva do espectro
 fs = 1000;  % Frequência de amostragem, por exemplo, 1000 Hz
 frequencies = (0:(next_pow2/2)) * (fs / next_pow2);
 
-%------------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
 % Eixo de frequências para FFT Recursiva
 f_recursive = fs * (0:(next_pow2/2)) / next_pow2;
 N = length(x);        % Número de pontos na FFT
@@ -173,22 +176,22 @@ Y_phase = Y_phase(1:N/2+1); % Mantém apenas a metade positiva do espectro
 % grid on;
 
 % Plot do espectro de frequência usando FFT mixed
-subplot(1,2,1);
-plot(frequencies, C_magnitude);
-title('Espectro de Frequência (FFT mixed Factor)');
-xlabel('Frequência (Hz)');
-ylabel('Magnitude');
-grid on;
+% subplot(1,2,1);
+% plot(frequencies, C_magnitude);
+% title('Espectro de Frequência (FFT mixed Factor)');
+% xlabel('Frequência (Hz)');
+% ylabel('Magnitude');
+% grid on;
 
-subplot(1,2,2);
-plot(frequencies, C_fase);
-title('Espectro de Frequência (Fase)');
-xlabel('Frequência (Hz)');
-ylabel('Fase (radianos)');
-grid on;
+% subplot(1,2,2);
+% plot(frequencies, C_fase);
+% title('Espectro de Frequência (Fase)');
+% xlabel('Frequência (Hz)');
+% ylabel('Fase (radianos)');
+% grid on;
 
 
-pause(10);
+% pause(10);
 % print("Test1/time_domain-1.png", "-dpng");
 % print("Test1/prime_fft-1.png", "-dpng");
 % print("Test1/recursive_fft-1.png", "-dpng");
