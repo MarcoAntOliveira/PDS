@@ -1,68 +1,10 @@
 addpath("funcoes/")
 pkg load communications
 pkg load image
-% g. Em um novo script (exemplo: Q3.3), faça novamente o procedimento para
-% obter a magnitude e a fase da imagem em escala de cinzas. Porém, agora você
-% deverá gerar um ruído branco (use a função wgn) com uma potência de 90
-% dBW. O sinal ruído branco deve ter as mesmas dimensões da imagem.
-% Implementação de SAFFT em uma imagem utilizando a função safft2
 
-imagem = imread('trab2/eli.jpg');  % Substitua pelo nome do arquivo de imagem
+% Carregar e processar a imagem
+imagem = imread('trab2/lena_std(1).tif'); % Substitua pelo nome do arquivo de imagem
 [n_linhas, n_colunas, n_canais] = size(imagem);
-
-% % Converter a imagem para tons de cinza, se necessário
-if size(imagem, 3) == 3
-    imagem_cinza = rgb2gray(imagem);
-else
-    imagem_cinza = imagem;
-end
-
-% % Definir o tamanho do bloco para o SAFFT
-bloco_tamanho = 1024;  % Tamanho do bloco adaptável
-
-% % Aplicar o SAFFT usando a função safft2
-safft_resultado = safft2(imagem_cinza, bloco_tamanho);
-
-% % Centralizar o espectro de cada bloco
-safft_resultado_shifted = fftshift(safft_resultado);
-% h. Aplique o ruído branco e realize a inversa da FFT bidimensional e não esqueça
-% de incluir a fase nesse processo (Magnitude.*exp(i*Fase))+ ruído.
-% Transformada e deslocamento de FFT
-F_shifted = fftshift(safft_resultado);  
-magnitude = abs(F_shifted); 
-fase = angle(F_shifted);      
-
-% Aplicar ruído branco (ruído aditivo gaussiano) na magnitude e fase
-ruido_magnitude = magnitude + 0.05 * randn(size(magnitude)); % ajuste o valor de 0.05 conforme desejado para a intensidade do ruído
-ruido_fase = fase + 0.05 * randn(size(fase));  % adição de ruído na fase também
-
-% Reconstruir com ruído na FFT inversa
-F_com_ruido = ruido_magnitude .* exp(1i * ruido_fase);  % combinação de magnitude e fase com ruído
-F_com_ruido_shifted = ifftshift(F_com_ruido);  % shift inverso
-imagem_com_ruido = real(ifft2(F_com_ruido_shifted));  % transformada inversa de Fourier
-
-% Exibir resultados
-figure;
-subplot(1, 3, 1); imshow(imagem_cinza); title('Imagem Original em Tons de Cinza');
-subplot(1, 3, 2); imshow(imagem_mag_only, []); title('Imagem com Apenas Magnitude');
-subplot(1, 3, 3); imshow(imagem_com_ruido, []); title('Imagem Reconstruída com Ruído');
-
-
-
-imagem = imread('trab2/lena_std(1).tif');  % Substitua pelo nome do arquivo de imagem
-[n_linhas, n_colunas, n_canais] = size(imagem);
-
-
-% % Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
-% if n_canais == 1
-%     imshow(imagem);  % Imagem em escala de cinza
-% elseif n_canais == 3
-%     n = 3;  % Canal azul, por exemplo
-%     imshow(imagem(:,:,n));  % Exibe o canal especificado
-% else
-%     disp('Imagem com número inesperado de canais');
-% end
-
 
 % Converter a imagem para tons de cinza, se necessário
 if size(imagem, 3) == 3
@@ -78,20 +20,78 @@ bloco_tamanho = 1024;  % Tamanho do bloco adaptável
 safft_resultado = safft2(imagem_cinza, bloco_tamanho);
 
 % Centralizar o espectro de cada bloco
-safft_resultado_shifted = fftshift(safft_resultado);
+F_shifted = fftshift(safft_resultado);  
+magnitude = abs(F_shifted); 
+fase = angle(F_shifted);
 
-% Calcular a magnitude da SAFFT
-magnitude_safft = log(1 + abs(safft_resultado_shifted));
-angle_safft = angle(safft_resultado_shifted);
+% Reconstruir imagem usando apenas a magnitude (fase uniforme = 0)
+fase_uniforme = zeros(size(fase)); % fase uniforme = 0
+F_mag_only = magnitude .* exp(1i * fase_uniforme);
+F_mag_only_shifted = ifftshift(F_mag_only);
+imagem_mag_only = real(ifft2(F_mag_only_shifted));
+
 % Gerar ruído branco com potência de 90 dBW
-ruido_branco = wgn(n_linhas, n_colunas, 90, 'linear');
+ruido = wgn(n_linhas, n_colunas, 90); % ruído branco aditivo com potência de 90 dBW
+
+% Adicionar o ruído branco diretamente na magnitude e fase originais
+magnitude_ruido = magnitude + ruido;
+fase_ruido = fase;
+
+% Reconstruir com magnitude e fase, incluindo o ruído
+F_com_ruido = magnitude_ruido .* exp(1i * fase_ruido);
+F_com_ruido_shifted = ifftshift(F_com_ruido);
+imagem_com_ruido = real(ifft2(F_com_ruido_shifted));
+
+% Exibir resultados
+figure;
+subplot(1, 2, 1); imshow(imagem_cinza); title('Imagem Original em Tons de Cinza');
+% subplot(1, 2, 2); imshow(imagem_mag_only, []); title('Imagem com Apenas Magnitude');
+subplot(1, 2, 2); imshow(imagem_com_ruido, []); title('Imagem Reconstruída com Ruído');
+
+
+% imagem = imread('trab2/lena_std(1).tif');  % Substitua pelo nome do arquivo de imagem
+% [n_linhas, n_colunas, n_canais] = size(imagem);
+
+
+% % % Verifica se a imagem é colorida (3 canais) ou em escala de cinza (1 canal)
+% % if n_canais == 1
+% %     imshow(imagem);  % Imagem em escala de cinza
+% % elseif n_canais == 3
+% %     n = 3;  % Canal azul, por exemplo
+% %     imshow(imagem(:,:,n));  % Exibe o canal especificado
+% % else
+% %     disp('Imagem com número inesperado de canais');
+% % end
+
+
+% % Converter a imagem para tons de cinza, se necessário
+% if size(imagem, 3) == 3
+%     imagem_cinza = rgb2gray(imagem);
+% else
+%     imagem_cinza = imagem;
+% end
+
+% % Definir o tamanho do bloco para o SAFFT
+% bloco_tamanho = 1024;  % Tamanho do bloco adaptável
+
+% % Aplicar o SAFFT usando a função safft2
+% safft_resultado = safft2(imagem_cinza, bloco_tamanho);
+
+% % Centralizar o espectro de cada bloco
+% safft_resultado_shifted = fftshift(safft_resultado);
+
+% % Calcular a magnitude da SAFFT
+% magnitude_safft = log(1 + abs(safft_resultado_shifted));
+% angle_safft = angle(safft_resultado_shifted);
+% % Gerar ruído branco com potência de 90 dBW
+% ruido_branco = wgn(n_linhas, n_colunas, 90, 'linear');
 
 % % Adicionar o ruído à magnitude da SAFFT
 % imagem_ruido_branco = magnitude_safft.* exp(1i * angle_safft) + ruido_branco;
 % imagem_ruido_branco_shifted = ifftshift(imagem_ruido_branco);  % Shift inverso
 % imagem_rec_ruido_branco = real(ifft2(imagem_ruido_branco_shifted));  % FFT inversa
 
-figure;
+
 % subplot(1, 2, 1);
 % imshow(imagem_cinza);
 % title('Imagem Original em Tons de Cinza');
@@ -125,4 +125,4 @@ imagem_speckle = imnoise(imagem_cinza, 'speckle');
 % title('Imagem com Ruído Speckle');
 % pause(10);
 
-print("trab2/2.3_h).png", "-dpng");
+print("trab2/2.3_g).png", "-dpng");
