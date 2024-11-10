@@ -15,3 +15,4 @@ function [Hr, w, c, L] = Hr_Type3(h)
     w = (0:1:500)' * pi / 500;   % Frequency vector
     Hr = sin(w * n) * c';
 end
+
