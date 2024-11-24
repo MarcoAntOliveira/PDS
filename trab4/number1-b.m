@@ -19,53 +19,27 @@ fprintf("Ordem do filtro (Transformação Bilinear): %d\n", n);
 [z, p, k] = butter(n, Wn, 's'); % Protótipo analógico em polos e zeros
 [b_a, a_a] = zp2tf(z, p, k);    % Conversão para coeficientes do numerador e denominador
 
+% Verificação dos coeficientes
+disp("Coeficientes do filtro analógico:");
+disp("Numerador: "), disp(b_a);
+disp("Denominador: "), disp(a_a);
+
 % 3. Conversão para filtro digital usando Transformação Bilinear
 [b_d, a_d] = bilinear(b_a, a_a, Fs);
 
-% 4. Projeto do filtro digital com a função butter (direto)
-[b_butter, a_butter] = butter(n, Wn);  % Filtro digital usando a função butter
-
-% 5. Análise de magnitude logarítmica (em dB)
-% Frequências para análise (em rad/s) para o filtro analógico
-omega_analog = linspace(0, 2*pi, 500);  % Frequências contínuas de 0 a 2*pi rad/s
-
-% Resposta em frequência do filtro analógico
-[H_analog, omega_analog] = freqs(b_a, a_a, omega_analog);  % Frequências contínuas (rad/s)
-
-% Resposta em frequência do filtro digital (Transformação Bilinear)
-[H_digital_bilinear, omega_digital] = freqz(b_d, a_d, linspace(0, pi, 500));  % Frequências normalizadas
-
-% Resposta em frequência do filtro digital (Butter)
-[H_digital_butter, omega_digital_butter] = freqz(b_butter, a_butter, linspace(0, pi, 500));  % Frequências normalizadas
+% Resposta ao impulso do filtro digital
+[H_digital_bilinear, omega_digital] = freqz(b_d, a_d, linspace(0, pi, 500));
 
 % Conversão para escala dB
-magnitude_analog = 20*log10(abs(H_analog));
-magnitude_digital_bilinear = 20*log10(abs(H_digital_bilinear));
-magnitude_digital_butter = 20*log10(abs(H_digital_butter));
+eps = 1e-10; % Evitar logaritmo de zero
+magnitude_digital_bilinear = 20 * log10(max(abs(H_digital_bilinear), eps));
 
-% 6. Respostas ao impulso
-impulse_analog = impz(b_a, a_a); % Resposta ao impulso analógico
-impulse_digital_bilinear = impz(b_d, a_d); % Resposta ao impulso digital (Transformação Bilinear)
-impulse_digital_butter = impz(b_butter, a_butter); % Resposta ao impulso digital (Butter)
-
-% Plotando os resultados
+% Plotando a resposta em frequência do filtro digital
 figure;
-subplot(2, 1, 1);
-plot(omega_analog/pi, magnitude_analog, 'r', 'LineWidth', 1.5); hold on;
 plot(omega_digital/pi, magnitude_digital_bilinear, 'b--', 'LineWidth', 1.5);
-plot(omega_digital_butter/pi, magnitude_digital_butter, 'g:', 'LineWidth', 1.5);
 xlabel('Frequência Normalizada (\omega / \pi)');
 ylabel('Magnitude (dB)');
-title('Resposta de Magnitude Logarítmica');
-legend('Analógico', 'Digital (Transformação Bilinear)', 'Digital (Butter)');
+title('Resposta de Magnitude - Filtro Digital (Transformação Bilinear)');
 grid on;
-
-subplot(2, 1, 2);
-stem(impulse_analog, 'r', 'DisplayName', 'Analógico'); hold on;
-stem(impulse_digital_bilinear, 'b--', 'DisplayName', 'Digital (Transformação Bilinear)');
-stem(impulse_digital_butter, 'g:', 'DisplayName', 'Digital (Butter)', 'LineWidth', 1.5);
-xlabel('Amostras');
-ylabel('Amplitude');
-title('Respostas ao Impulso');
-legend;
-grid on;
+% pause(10);
+print("trab4/1-b)png", "-dpng");

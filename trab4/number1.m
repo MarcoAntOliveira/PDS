@@ -24,27 +24,26 @@ fprintf("Ordem do filtro: %d\n", n);
 
 % 4. Análise de magnitude logarítmica (em dB)
 % Frequências para análise (em rad/s) para o filtro analógico
-omega_analog = linspace(0, 2*pi, 500);  % Frequências contínuas de 0 a 2*pi rad/s
+omega_analog = logspace(-1, log10(2*pi), 500);  % Frequências contínuas positivas
 
 % Resposta em frequência do filtro analógico
-[H_analog, omega_analog] = freqs(b_a, a_a, omega_analog);  % Frequências contínuas (rad/s)
+H_analog = freqs(b_a, a_a, omega_analog);  % Frequências contínuas (rad/s)
 
 % Resposta em frequência do filtro digital
 [H_digital, omega_digital] = freqz(b_d, a_d, linspace(0, pi, 500));  % Frequências normalizadas
 
-% Conversão para escala dB
-magnitude_analog = 20*log10(abs(H_analog));
-magnitude_digital = 20*log10(abs(H_digital));
-
+% Corrigir valores para evitar log de zero ou valores negativos
+eps = 1e-10;
+magnitude_analog = 20 * log10(max(abs(H_analog), eps));
+magnitude_digital = 20 * log10(max(abs(H_digital), eps));
 
 % 5. Respostas ao impulso
-impulse_analog = impz(b_a, a_a); % Resposta ao impulso analógico
 impulse_digital = impz(b_d, a_d); % Resposta ao impulso digital
 
 % Plotando os resultados
 figure;
 subplot(2, 1, 1);
-plot(omega_analog/pi, magnitude_analog, 'r', 'LineWidth', 1.5); hold on;
+semilogx(omega_analog/(2*pi), magnitude_analog, 'r', 'LineWidth', 1.5); hold on;
 plot(omega_digital/pi, magnitude_digital, 'b--', 'LineWidth', 1.5);
 xlabel('Frequência Normalizada (\omega / \pi)');
 ylabel('Magnitude (dB)');
@@ -53,12 +52,11 @@ legend('Analógico', 'Digital');
 grid on;
 
 subplot(2, 1, 2);
-stem(impulse_analog, 'r', 'DisplayName', 'Analógico'); hold on;
-stem(impulse_digital, 'b--', 'DisplayName', 'Digital');
+stem(0:length(impulse_digital)-1, impulse_digital, 'b--', 'DisplayName', 'Digital');
 xlabel('Amostras');
 ylabel('Amplitude');
-title('Respostas ao Impulso');
+title('Resposta ao Impulso (Digital)');
 legend;
 grid on;
-pause(10);
-% print("trab4/1.png", "-dpng");
+% pause(10);
+print("trab4/1-a)png", "-dpng");
